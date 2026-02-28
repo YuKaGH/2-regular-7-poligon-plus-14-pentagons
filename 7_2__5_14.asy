@@ -61,7 +61,7 @@ for(int i=0; i<n; ++i) {
 // Вычисляем сдвиг по вертикали, чтобы уровнять z-координаты E0 и E'0
 real dz = E[0].z - E_ref[0].z;
 
-// Сдвигаем верхнюю часть вверх на dz/2 (по предложению пользователя)
+// Сдвигаем верхнюю часть вверх на dz/2
 triple[] Vp, Cp, Dp, Ep;
 Vp = new triple[n];
 Cp = new triple[n];
@@ -74,7 +74,7 @@ for(int i=0; i<n; ++i) {
     Ep[i] = E_ref[i] + (0,0,dz/2);
 }
 
-// ---- Функция для рисования грани с заливкой и контуром ----
+// Функция для рисования грани
 void drawFace(triple[] pts, pen contourPen=blue+0.8bp, pen fillPen=lightblue+opacity(0.3)) {
     path3 g = pts[0];
     for(int i=1; i<pts.length; ++i) g = g -- pts[i];
@@ -84,43 +84,27 @@ void drawFace(triple[] pts, pen contourPen=blue+0.8bp, pen fillPen=lightblue+opa
     draw(s, fillPen);
 }
 
-// ---- Рисуем все грани ----
-
 // Нижний семиугольник
-drawFace(V, blue+1.2bp, lightblue+opacity(0.6));
+drawFace(V, blue+1.2bp, lightblue+opacity(0.2));
 
 // Верхний семиугольник
-drawFace(Vp, blue+1.2bp, lightblue+opacity(0.6));
+drawFace(Vp, blue+1.2bp, lightblue+opacity(0.2));
 
-// Нижние пятиугольники (7 штук)
+// Нижние пятиугольники
 for(int i=0; i<n; ++i) {
     int ip1 = (i+1) % n;
     triple[] pent = {V[i], V[ip1], D[i], E[i], C[i]};
-    drawFace(pent, blue+0.8bp, lightblue+opacity(0.6));
+    drawFace(pent, blue+0.8bp, lightblue+opacity(0.3));
 }
 
-// Верхние пятиугольники (7 штук)
+// Верхние пятиугольники
 for(int i=0; i<n; ++i) {
     int ip1 = (i+1) % n;
     triple[] pent = {Vp[i], Vp[ip1], Dp[i], Ep[i], Cp[i]};
-    drawFace(pent, blue+0.8bp, lightblue+opacity(0.6));
+    drawFace(pent, blue+0.8bp, lightblue+opacity(0.3));
 }
 
-// Опционально: добавим боковые грани, если нужно (здесь не рисуем, как просили)
-
-// ---- Подписи вершин для ориентации ----
-//label("$V_0$", V[0], NW);
-//label("$V_1$", V[1], NE);
-//label("$C_0$", C[0], S);
-//label("$D_0$", D[0], S);
-//label("$E_0$", E[0], N);
-//label("$V'_0$", Vp[0], SW);
-//label("$V'_1$", Vp[1], SE);
-//label("$C'_0$", Cp[0], N);
-//label("$D'_0$", Dp[0], N);
-//label("$E'_0$", Ep[0], S);
-
-// Точки для визуализации (можно убрать, если мешают)
+// Опционально: точки и подписи
 dot(V, blue);
 dot(Vp, blue);
 dot(C, red);
@@ -129,10 +113,3 @@ dot(E, green);
 dot(Cp, red);
 dot(Dp, red);
 dot(Ep, green);
-currentprojection=
-  perspective(camera=(4.989244,4.997516,6.751183),
-              up=(-0.0010911552484829273,-0.007572680220916018,0.006585376538346185),
-              target=(-3.0754720724069182,3.669747600089713,3.8880823558373256),
-              zoom=1,
-              angle=28.120848158445042,
-              autoadjust=false);
